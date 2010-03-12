@@ -73,13 +73,13 @@ namespace :redis do
   desc 'Install the lastest verison of Redis from Github (requires git, duh)'
   task :install => [:about, :download, :make] do
     %w(redis-benchmark redis-cli redis-server).each do |bin|
-      sh "sudo cp /tmp/redis/#{bin} /usr/bin/"
+      sh "cp /tmp/redis/#{bin} /usr/bin/"
     end
 
     puts "Installed redis-benchmark, redis-cli and redis-server to /usr/bin/"
         
     unless File.exists?('/etc/redis.conf')
-      sh 'sudo cp /tmp/redis/redis.conf /etc/'
+      sh 'cp /tmp/redis/redis.conf /etc/'
       puts "Installed redis.conf to /etc/ \n You should look at this file!"
     end  
   end
@@ -92,7 +92,7 @@ namespace :redis do
   desc "Download package"
   task :download do
     sh 'rm -rf /tmp/redis/' if File.exists?("#{RedisRunner.redisdir}/.svn")
-    sh 'git clone git://github.com/antirez/redis.git /tmp/redis' unless File.exists?(RedisRunner.redisdir)
+    sh 'git clone http://github.com/antirez/redis.git /tmp/redis' unless File.exists?(RedisRunner.redisdir)
 
     if File.exists?("#{RedisRunner.redisdir}/.git")
       arguments = ENV['COMMIT'].nil? ? "pull" : "reset --hard #{ENV['COMMIT']}"
@@ -132,7 +132,7 @@ namespace :dtach do
     
     Dir.chdir('/tmp/dtach-0.8/')
     sh 'cd /tmp/dtach-0.8/ && ./configure && make'    
-    sh 'sudo cp /tmp/dtach-0.8/dtach /usr/bin/'
+    sh 'cp /tmp/dtach-0.8/dtach /usr/bin/'
     
     puts 'Dtach successfully installed to /usr/bin.'
   end
